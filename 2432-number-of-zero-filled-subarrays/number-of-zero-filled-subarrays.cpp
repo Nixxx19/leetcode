@@ -3,23 +3,20 @@ class Solution
 public:
     long long zeroFilledSubarray(vector<int>& nums) 
     {
-        long long totalSubarrays = 0;
-        long long consecutiveZeros = 0;
+        long long count = 0;
 
-        for (int val : nums) 
-        {
-            if (val == 0) 
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] == 0) 
             {
-                consecutiveZeros++;
-            } else 
-            {
-                totalSubarrays += consecutiveZeros * (consecutiveZeros + 1) / 2;
-                consecutiveZeros = 0;
+                int j = i;
+                while (j < nums.size() && nums[j] == 0) 
+                {
+                    count += (j - i + 1);  
+                    j++;
+                }
+                i = j - 1;
             }
         }
-
-        totalSubarrays += consecutiveZeros * (consecutiveZeros + 1) / 2;
-
-        return totalSubarrays;
+        return count;
     }
 };
