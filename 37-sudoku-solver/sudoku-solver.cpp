@@ -8,7 +8,7 @@ public:
 
         int srow = 3 * (row / 3);
         int scol = 3 * (col / 3);
-        for (int i = srow; i < srow + 2; i++) {
+        for (int i = srow; i < srow + 3; i++) {
             for (int j = scol; j < scol + 3; j++) {
                 if (board[i][j] == dig) return false;
             }
