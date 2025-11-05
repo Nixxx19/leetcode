@@ -6,14 +6,20 @@ public:
         vector<int> f(51,0);
         for (int i = 0; i < k; i++) f[nums[i]]++;
         auto calc = [&]() {
-            vector<pair<int,int>> v;
-            for (int val = 1; val <= 50; val++) if (f[val]) v.push_back({f[val], val});
-            sort(v.begin(), v.end(), [](auto &a, auto &b){
-                if (a.first != b.first) return a.first > b.first;
-                return a.second > b.second;
-            });
+            vector<bool> used(51,false);
             int sum = 0;
-            for (int t = 0; t < (int)v.size() && t < x; t++) sum += v[t].first * v[t].second;
+            for (int c = 0; c < x; c++) {
+                int bestVal = -1, bestCnt = 0;
+                for (int val = 1; val <= 50; val++) {
+                    if (used[val] || f[val]==0) continue;
+                    if (f[val] > bestCnt || (f[val]==bestCnt && val > bestVal)) {
+                        bestCnt = f[val]; bestVal = val;
+                    }
+                }
+                if (bestVal == -1) break;
+                used[bestVal] = true;
+                sum += bestCnt * bestVal;
+            }
             return sum;
         };
         ans.push_back(calc());
