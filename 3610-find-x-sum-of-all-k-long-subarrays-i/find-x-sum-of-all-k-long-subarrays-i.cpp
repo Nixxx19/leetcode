@@ -4,11 +4,11 @@ public:
         int n = nums.size();
         vector<int> ans;
         for (int i = 0; i + k <= n; i++) {
-            unordered_map<int,int> freq;
-            for (int j = i; j < i + k; j++) freq[nums[j]]++;
+            vector<int> f(51,0);
+            for (int j = i; j < i + k; j++) f[nums[j]]++;
             vector<pair<int,int>> v;
-            for (auto &p : freq) v.push_back({p.second, p.first});
-            sort(v.begin(), v.end(), [](auto &a, auto &b) {
+            for (int val = 1; val <= 50; val++) if (f[val]) v.push_back({f[val], val});
+            sort(v.begin(), v.end(), [](auto &a, auto &b){
                 if (a.first != b.first) return a.first > b.first;
                 return a.second > b.second;
             });
