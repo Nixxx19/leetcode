@@ -1,23 +1,21 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
+        unordered_map<int,int> freq;
+        for (int x : nums) freq[x]++;
+        vector<int> vals;
+        for (auto &p : freq) vals.push_back(p.first);
+        sort(vals.begin(), vals.end());
         vector<vector<int>> res;
-        int n = nums.size();
-        for (int i = 0; i < n - 2; ++i) {
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
-            int l = i + 1, r = n - 1;
-            while (l < r) {
-                int sum = nums[i] + nums[l] + nums[r];
-                if (sum == 0) {
-                    res.push_back({nums[i], nums[l], nums[r]});
-                    while (l < r && nums[l] == nums[l + 1]) ++l;
-                    while (l < r && nums[r] == nums[r - 1]) --r;
-                    ++l; --r;
-                } else if (sum < 0) ++l;
-                else --r;
+        for (int i = 0; i < vals.size(); ++i)
+            for (int j = i; j < vals.size(); ++j) {
+                int a = vals[i], b = vals[j], c = -a - b;
+                if (!freq.count(c)) continue;
+                if (c < b) continue;
+                if (a == b && b == c && freq[a] < 3) continue;
+                if ((a == b && freq[a] < 2) || (b == c && freq[b] < 2) || (a == c && freq[a] < 2)) continue;
+                res.push_back({a, b, c});
             }
-        }
         return res;
     }
 };
