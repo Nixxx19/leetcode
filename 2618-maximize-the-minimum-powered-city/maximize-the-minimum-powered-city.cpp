@@ -1,18 +1,18 @@
 class Solution {
 public:
-    bool can(vector<long long>& power, int r, long long k, long long x) {
+    bool feasible(vector<long long>& power, int r, long long k, long long x) {
         int n = power.size();
-        vector<long long> add(n, 0);
-        long long sumAdd = 0;
+        vector<long long> diff(n + 1, 0);
+        long long curAdd = 0;
         for (int i = 0; i < n; ++i) {
-            if (i - r - 1 >= 0) sumAdd -= add[i - r - 1];
-            long long cur = power[i] + sumAdd;
-            if (cur < x) {
-                long long need = x - cur;
+            curAdd += diff[i];
+            long long curPower = power[i] + curAdd;
+            if (curPower < x) {
+                long long need = x - curPower;
                 if (need > k) return false;
                 k -= need;
-                add[min(n - 1, i + r)] += need;
-                sumAdd += need;
+                curAdd += need;
+                if (i + 2 * r + 1 < n) diff[i + 2 * r + 1] -= need;
             }
         }
         return true;
@@ -29,7 +29,7 @@ public:
         long long lo = 0, hi = 2e14, ans = 0;
         while (lo <= hi) {
             long long mid = (lo + hi) / 2;
-            if (can(power, r, k, mid)) { ans = mid; lo = mid + 1; }
+            if (feasible(power, r, k, mid)) ans = mid, lo = mid + 1;
             else hi = mid - 1;
         }
         return ans;
