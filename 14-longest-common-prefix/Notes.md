@@ -1,0 +1,1 @@
+<h2>longest-common-prefix Notes</h2><hr>After sorting strings, only first and last differ the most; compare them to get prefix quickly.
