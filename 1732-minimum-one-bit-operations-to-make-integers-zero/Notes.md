@@ -1,0 +1,1 @@
+<h2>minimum-one-bit-operations-to-make-integers-zero Notes</h2><hr>The answer is simply converting n from binary to Gray code inverse.
