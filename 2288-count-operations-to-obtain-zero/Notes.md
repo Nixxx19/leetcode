@@ -1,0 +1,1 @@
+<h2>count-operations-to-obtain-zero Notes</h2><hr>Same optimized loop, but done in a compact one-liner.
