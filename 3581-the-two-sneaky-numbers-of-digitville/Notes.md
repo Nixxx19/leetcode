@@ -1,0 +1,1 @@
+<h2>the-two-sneaky-numbers-of-digitville Notes</h2><hr>I used a hash map and counted how many times each number appeared.
