@@ -1,17 +1,22 @@
 class Solution {
 public:
     int countValidSelections(vector<int>& nums) {
-        int n = nums.size();
-        vector<long long> prefix(n + 1, 0);
-        for (int i = 0; i < n; ++i) prefix[i + 1] = prefix[i] + nums[i];
-        long long total = prefix[n];
-        int ans = 0;
+        int n = nums.size(), ans = 0;
         for (int i = 0; i < n; ++i) {
             if (nums[i] == 0) {
-                long long left = prefix[i];
-                long long right = total - left;
-                if (left == right) ans += 2;
-                else if (abs(left - right) == 1) ans += 1;
+                for (int dir : {-1, 1}) {
+                    vector<int> arr = nums;
+                    int curr = i, d = dir;
+                    while (curr >= 0 && curr < n) {
+                        if (arr[curr] == 0) curr += d;
+                        else {
+                            arr[curr]--;
+                            d = -d;
+                            curr += d;
+                        }
+                    }
+                    if (all_of(arr.begin(), arr.end(), [](int x){ return x == 0; })) ans++;
+                }
             }
         }
         return ans;
