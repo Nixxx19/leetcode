@@ -1,16 +1,28 @@
 class Solution {
 public:
     vector<vector<int>> rangeAddQueries(int n, vector<vector<int>>& queries) {
-        vector<vector<int>> mat(n, vector<int>(n, 0));
+        vector<vector<int>> diff(n, vector<int>(n + 1, 0));
 
         for (auto &q : queries) {
-            for (int i = q[0]; i <= q[2]; i++) {
-                for (int j = q[1]; j <= q[3]; j++) {
-                    mat[i][j]++;
-                }
+            int r1 = q[0], c1 = q[1];
+            int r2 = q[2], c2 = q[3];
+
+            for (int r = r1; r <= r2; r++) {
+                diff[r][c1]++;
+                if (c2 + 1 < n) diff[r][c2 + 1]--;
             }
         }
 
-        return mat;
+        vector<vector<int>> ans(n, vector<int>(n, 0));
+
+        for (int i = 0; i < n; i++) {
+            int curr = 0;
+            for (int j = 0; j < n; j++) {
+                curr += diff[i][j];
+                ans[i][j] = curr;
+            }
+        }
+
+        return ans;
     }
 };
