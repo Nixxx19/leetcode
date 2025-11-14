@@ -1,9 +1,15 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        if (!head || !head->next) return head;
-        head->next = deleteDuplicates(head->next);
-        if (head->val == head->next->val) head = head->next;
-        return head;
+        ListNode dummy(0, head);
+        ListNode* current = &dummy;
+        while (current->next && current->next->next) {
+            if (current->next->val == current->next->next->val) {
+                current->next->next = current->next->next->next;
+            } else {
+                current = current->next;
+            }
+        }
+        return dummy.next;
     }
 };
