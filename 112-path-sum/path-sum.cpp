@@ -2,13 +2,13 @@ class Solution {
 public:
     bool hasPathSum(TreeNode* root, int targetSum) {
         if (!root) return false;
-        stack<pair<TreeNode*, int>> st;
-        st.push({root, root->val});
-        while (!st.empty()) {
-            auto [node, sum] = st.top(); st.pop();
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, root->val});
+        while (!q.empty()) {
+            auto [node, sum] = q.front(); q.pop();
             if (!node->left && !node->right && sum == targetSum) return true;
-            if (node->right) st.push({node->right, sum + node->right->val});
-            if (node->left) st.push({node->left, sum + node->left->val});
+            if (node->left) q.push({node->left, sum + node->left->val});
+            if (node->right) q.push({node->right, sum + node->right->val});
         }
         return false;
     }
