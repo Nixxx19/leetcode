@@ -1,15 +1,11 @@
 class Solution {
 public:
     int numSub(string s) {
-        long long ans = 0, mod = 1e9 + 7;
-        int n = s.size(), i = 0;
-        while (i < n) {
-            if (s[i] == '0') { i++; continue; }
-            int j = i;
-            while (j < n && s[j] == '1') j++;
-            long long len = j - i;
-            ans = (ans + len * (len + 1) / 2) % mod;
-            i = j;
+        long long ans = 0, cur = 0, mod = 1e9 + 7;
+        for (char c : s) {
+            if (c == '1') cur++;
+            else cur = 0;
+            ans = (ans + cur) % mod;
         }
         return ans;
     }
