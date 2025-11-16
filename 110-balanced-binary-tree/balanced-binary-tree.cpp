@@ -1,16 +1,13 @@
 class Solution {
 public:
-    int dfs(TreeNode* root) {
+    int height(TreeNode* root) {
         if (!root) return 0;
-        int l = dfs(root->left);
-        if (l == -1) return -1;
-        int r = dfs(root->right);
-        if (r == -1) return -1;
-        if (abs(l - r) > 1) return -1;
-        return max(l, r) + 1;
+        return 1 + max(height(root->left), height(root->right));
     }
-
+    
     bool isBalanced(TreeNode* root) {
-        return dfs(root) != -1;
+        if (!root) return true;
+        if (abs(height(root->left) - height(root->right)) > 1) return false;
+        return isBalanced(root->left) && isBalanced(root->right);
     }
 };
