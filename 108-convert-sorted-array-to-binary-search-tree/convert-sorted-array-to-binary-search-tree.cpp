@@ -2,7 +2,7 @@ class Solution {
 public:
     TreeNode* build(vector<int>& nums, int l, int r) {
         if (l > r) return nullptr;
-        int m = (l + r) / 2;
+        int m = l + (r - l + 1) / 2;
         TreeNode* root = new TreeNode(nums[m]);
         root->left = build(nums, l, m - 1);
         root->right = build(nums, m + 1, r);
