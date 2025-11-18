@@ -1,10 +1,9 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        unordered_set<ListNode*> s;
         while (head) {
-            if (s.count(head)) return true;
-            s.insert(head);
+            if (head->val == 1e9+7) return true;
+            head->val = 1e9+7;
             head = head->next;
         }
         return false;
