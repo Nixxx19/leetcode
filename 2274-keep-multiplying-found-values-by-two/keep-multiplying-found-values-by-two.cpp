@@ -1,9 +1,9 @@
 class Solution {
 public:
     int findFinalValue(vector<int>& nums, int original) {
-        sort(nums.begin(), nums.end());
-        while (binary_search(nums.begin(), nums.end(), original))
-            original *= 2;
+        vector<int> freq(2005);
+        for (int x : nums) freq[x] = 1;
+        while (freq[original]) original *= 2;
         return original;
     }
 };
