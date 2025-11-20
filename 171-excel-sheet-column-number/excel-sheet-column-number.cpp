@@ -4,7 +4,8 @@ public:
     int titleToNumber(string s)
     {
         long long ans = 0;
-        for (char c : s) ans = ans * 26 + (c - 'A' + 1);
+        for (int i = 0; i < s.size(); i++)
+            ans += (s[i] - 'A' + 1) * pow(26, s.size()-1-i);
         return ans;
     }
 };
