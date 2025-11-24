@@ -1,11 +1,19 @@
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
-        int pos = -1;
+        vector<vector<int>> pos(26);
+        for (int i = 0; i < t.size(); i++)
+            pos[t[i]-'a'].push_back(i);
+
+        int curr = -1;
+
         for (char c : s) {
-            pos = t.find(c, pos + 1);
-            if (pos == string::npos) return false;
+            auto &v = pos[c - 'a'];
+            auto it = upper_bound(v.begin(), v.end(), curr);
+            if (it == v.end()) return false;
+            curr = *it;
         }
+
         return true;
     }
 };
