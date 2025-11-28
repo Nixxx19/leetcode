@@ -10,18 +10,19 @@ public:
         int ans = 0;
 
         function<long long(int,int)> dfs = [&](int u, int p) {
-            long long s = values[u];
+            long long cur = values[u];
             for (int v : g[u]) {
                 if (v == p) continue;
-                long long r = dfs(v, u);
-                if (r % k == 0) ans++;
-                else s += r;
+                long long child = dfs(v, u);
+                child %= k;
+                if (child == 0) ans++;
+                else cur += child;
             }
-            return s;
+            return cur;
         };
 
-        long long total = dfs(0, -1);
-        if (total % k == 0) ans++;
+        long long r = dfs(0, -1) % k;
+        if (r == 0) ans++;
         return ans;
     }
 };
