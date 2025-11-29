@@ -1,7 +1,8 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int k) {
-        long long s = accumulate(nums.begin(), nums.end(), 0LL);
-        return s % k;
+        long long s = 0;
+        for (int x : nums) s = (s + x) % k;
+        return s;
     }
 };
