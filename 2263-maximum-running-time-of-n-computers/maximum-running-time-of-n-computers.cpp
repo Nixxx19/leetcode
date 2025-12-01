@@ -1,20 +1,21 @@
 class Solution {
 public:
     long long maxRunTime(int n, vector<int>& batteries) {
-        sort(batteries.begin(), batteries.end());
-        long long sum = 0;
-        for (long long b : batteries) sum += b;
-        long long left = 0, right = sum / n;
+        long long total = 0;
+        for (long long b : batteries) total += b;
 
-        while (left < right) {
-            long long mid = (left + right + 1) / 2;
-            long long need = mid * n;
-            long long have = 0;
-            for (long long b : batteries) have += min(b, mid);
-            if (have >= need) left = mid;
-            else right = mid - 1;
+        long long lo = 0, hi = total / n;
+
+        while (lo < hi) {
+            long long mid = lo + (hi - lo + 1) / 2;
+            long long use = 0;
+            for (long long b : batteries) {
+                use += min(b, mid);
+            }
+            if (use >= mid * n) lo = mid;
+            else hi = mid - 1;
         }
 
-        return left;
+        return lo;
     }
 };
