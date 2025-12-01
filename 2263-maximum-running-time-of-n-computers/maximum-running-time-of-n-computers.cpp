@@ -1,6 +1,7 @@
 class Solution {
 public:
     long long maxRunTime(int n, vector<int>& batteries) {
+        sort(batteries.begin(), batteries.end());
         long long sum = 0;
         for (long long b : batteries) sum += b;
         long long left = 0, right = sum / n;
