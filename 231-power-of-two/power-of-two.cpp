@@ -1,6 +1,7 @@
 class Solution {
 public:
     bool isPowerOfTwo(int n) {
-        return n > 0 && (n & -n) == n;
+        if (n <= 0) return false;
+        return __builtin_popcount(n) == 1;
     }
 };
