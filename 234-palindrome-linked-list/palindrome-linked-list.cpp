@@ -1,16 +1,15 @@
 class Solution {
 public:
+    ListNode* front;
     bool isPalindrome(ListNode* head) {
-        vector<int> v;
-        while (head) {
-            v.push_back(head->val);
-            head = head->next;
-        }
-        int i = 0, j = v.size() - 1;
-        while (i < j) {
-            if (v[i] != v[j]) return false;
-            i++; j--;
-        }
+        front = head;
+        return dfs(head);
+    }
+    bool dfs(ListNode* node) {
+        if (!node) return true;
+        if (!dfs(node->next)) return false;
+        if (front->val != node->val) return false;
+        front = front->next;
         return true;
     }
 };
