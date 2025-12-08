@@ -1,16 +1,26 @@
 class Solution {
 public:
     vector<string> ans;
-    void dfs(TreeNode* node, string s) {
-        if (!node->left && !node->right) {
-            ans.push_back(s);
+    void dfs(TreeNode* n, string &path) {
+        if (!n->left && !n->right) {
+            ans.push_back(path);
             return;
         }
-        if (node->left) dfs(node->left, s + "->" + to_string(node->left->val));
-        if (node->right) dfs(node->right, s + "->" + to_string(node->right->val));
+        int old = path.size();
+        if (n->left) {
+            path += "->" + to_string(n->left->val);
+            dfs(n->left, path);
+            path.resize(old);
+        }
+        if (n->right) {
+            path += "->" + to_string(n->right->val);
+            dfs(n->right, path);
+            path.resize(old);
+        }
     }
     vector<string> binaryTreePaths(TreeNode* root) {
-        dfs(root, to_string(root->val));
+        string path = to_string(root->val);
+        dfs(root, path);
         return ans;
     }
 };
