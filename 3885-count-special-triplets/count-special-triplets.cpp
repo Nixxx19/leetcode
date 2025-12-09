@@ -1,16 +1,23 @@
 class Solution {
 public:
     int specialTriplets(vector<int>& nums) {
-        unordered_map<int,long long> left, right;
-        long long ans = 0, mod = 1000000007;
-        for (int x : nums) right[x]++;
-        for (int j = 0; j < nums.size(); j++) {
+        int n = nums.size(), mod = 1000000007;
+        vector<int> v = nums;
+        sort(v.begin(), v.end());
+        vector<long long> left(n), right(n);
+        for (int x : nums) {
+            int i = lower_bound(v.begin(), v.end(), x) - v.begin();
+            right[i]++;
+        }
+        long long ans = 0;
+        for (int j = 0; j < n; j++) {
             int x = nums[j];
-            right[x]--;
-            long long t = x * 2;
-            if (left.count(t) && right.count(t))
-                ans = (ans + left[t] * right[t]) % mod;
-            left[x]++;
+            int id = lower_bound(v.begin(), v.end(), x) - v.begin();
+            right[id]--;
+            int t = x * 2;
+            int p = lower_bound(v.begin(), v.end(), t) - v.begin();
+            if (p < n && v[p] == t) ans = (ans + left[p] * right[p]) % mod;
+            left[id]++;
         }
         return ans;
     }
