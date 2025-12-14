@@ -1,16 +1,13 @@
 class Solution {
 public:
+    int solve(int l, int r) {
+        if (l == r) return l;
+        int m = l + (r - l) / 2;
+        if (isBadVersion(m)) return solve(l, m);
+        return solve(m + 1, r);
+    }
+
     int firstBadVersion(int n) {
-        int l = 1, r = n, ans = n;
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-            if (isBadVersion(m)) {
-                ans = m;
-                r = m - 1;
-            } else {
-                l = m + 1;
-            }
-        }
-        return ans;
+        return solve(1, n);
     }
 };
