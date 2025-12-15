@@ -7,14 +7,12 @@ public:
         while (ss >> t) w.push_back(t);
         if (p.size() != w.size()) return false;
 
-        unordered_map<char,string> m1;
-        unordered_map<string,char> m2;
+        unordered_map<char,int> m1;
+        unordered_map<string,int> m2;
 
         for (int i = 0; i < p.size(); i++) {
-            if (m1.count(p[i]) && m1[p[i]] != w[i]) return false;
-            if (m2.count(w[i]) && m2[w[i]] != p[i]) return false;
-            m1[p[i]] = w[i];
-            m2[w[i]] = p[i];
+            if (m1[p[i]] != m2[w[i]]) return false;
+            m1[p[i]] = m2[w[i]] = i + 1;
         }
         return true;
     }
