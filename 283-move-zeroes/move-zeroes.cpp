@@ -1,10 +1,8 @@
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int k = 0;
-        for (int x : nums)
-            if (x != 0)
-                nums[k++] = x;
-        fill(nums.begin() + k, nums.end(), 0);
+        int cnt = count(nums.begin(), nums.end(), 0);
+        nums.erase(remove(nums.begin(), nums.end(), 0), nums.end());
+        nums.insert(nums.end(), cnt, 0);
     }
 };
