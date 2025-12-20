@@ -1,10 +1,14 @@
 class Solution {
 public:
     int countSegments(string s) {
+        bool in = false;
         int c = 0;
-        for (int i = 0; i < s.size(); i++)
-            if (s[i] != ' ' && (i == 0 || s[i - 1] == ' '))
-                c++;
+        for (char ch : s) {
+            if (ch != ' ') {
+                if (!in) c++;
+                in = true;
+            } else in = false;
+        }
         return c;
     }
 };
