@@ -1,14 +1,10 @@
 class Solution {
 public:
     int countSegments(string s) {
-        bool in = false;
+        string t;
+        stringstream ss(s);
         int c = 0;
-        for (char ch : s) {
-            if (ch != ' ') {
-                if (!in) c++;
-                in = true;
-            } else in = false;
-        }
+        while (ss >> t) c++;
         return c;
     }
 };
