@@ -1,6 +1,11 @@
 class Solution {
 public:
-    int arrangeCoins(long long n) {
-        return (int)((sqrt(1 + 8.0 * n) - 1) / 2);
+    int arrangeCoins(int n) {
+        int r = 0;
+        while (n >= r + 1) {
+            r++;
+            n -= r;
+        }
+        return r;
     }
 };
