@@ -1,25 +1,24 @@
 class Solution {
 public:
     int minDeletionSize(vector<string>& strs) {
-        int n = strs.size(), m = strs[0].size();
-        vector<int> ok(n - 1, 0);
-        int ans = 0;
-        for (int c = 0; c < m; c++) {
-            bool bad = false;
+        int n = strs.size(), m = strs[0].size(), res = 0;
+        vector<bool> fixed(n - 1, false);
+        for (int j = 0; j < m; j++) {
+            bool del = false;
             for (int i = 0; i < n - 1; i++) {
-                if (!ok[i] && strs[i][c] > strs[i + 1][c]) {
-                    bad = true;
+                if (!fixed[i] && strs[i][j] > strs[i + 1][j]) {
+                    del = true;
                     break;
                 }
             }
-            if (bad) {
-                ans++;
-                continue;
-            }
-            for (int i = 0; i < n - 1; i++) {
-                if (strs[i][c] < strs[i + 1][c]) ok[i] = 1;
+            if (del) {
+                res++;
+            } else {
+                for (int i = 0; i < n - 1; i++) {
+                    if (strs[i][j] < strs[i + 1][j]) fixed[i] = true;
+                }
             }
         }
-        return ans;
+        return res;
     }
 };
