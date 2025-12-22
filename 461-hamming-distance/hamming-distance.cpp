@@ -1,10 +1,9 @@
 class Solution {
 public:
     int hammingDistance(int x, int y) {
-        int v = x ^ y, cnt = 0;
-        while (v) {
-            v &= (v - 1);
-            cnt++;
+        int cnt = 0;
+        for (int i = 0; i < 32; i++) {
+            cnt += ((x >> i) & 1) != ((y >> i) & 1);
         }
         return cnt;
     }
