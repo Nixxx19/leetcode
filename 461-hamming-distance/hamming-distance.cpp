@@ -1,6 +1,11 @@
 class Solution {
 public:
     int hammingDistance(int x, int y) {
-        return __builtin_popcount(x ^ y);
+        int v = x ^ y, cnt = 0;
+        while (v) {
+            v &= (v - 1);
+            cnt++;
+        }
+        return cnt;
     }
 };
