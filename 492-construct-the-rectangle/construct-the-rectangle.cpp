@@ -1,10 +1,16 @@
 class Solution {
 public:
     vector<int> constructRectangle(int area) {
-        for (int w = sqrt(area); w >= 1; w--) {
-            if (area % w == 0)
-                return {area / w, w};
+        int l = area, w = 1;
+        for (int i = 1; i <= sqrt(area); i++) {
+            if (area % i == 0) {
+                int j = area / i;
+                if (j >= i) {
+                    l = j;
+                    w = i;
+                }
+            }
         }
-        return {area, 1};
+        return {l, w};
     }
 };
