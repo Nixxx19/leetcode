@@ -1,16 +1,10 @@
 class Solution {
 public:
     vector<int> constructRectangle(int area) {
-        int bestL = area, bestW = 1;
-        for (int w = 1; w * w <= area; w++) {
-            if (area % w == 0) {
-                int l = area / w;
-                if (l - w < bestL - bestW) {
-                    bestL = l;
-                    bestW = w;
-                }
-            }
+        for (int w = sqrt(area); w >= 1; w--) {
+            if (area % w == 0)
+                return {area / w, w};
         }
-        return {bestL, bestW};
+        return {area, 1};
     }
 };
