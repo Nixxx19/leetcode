@@ -1,13 +1,13 @@
 class Solution {
 public:
-    int fib(int n) {
+    int dfs(int n, vector<int>& memo) {
         if (n <= 1) return n;
-        int a = 0, b = 1;
-        for (int i = 2; i <= n; i++) {
-            int c = a + b;
-            a = b;
-            b = c;
-        }
-        return b;
+        if (memo[n] != -1) return memo[n];
+        return memo[n] = dfs(n - 1, memo) + dfs(n - 2, memo);
+    }
+
+    int fib(int n) {
+        vector<int> memo(n + 1, -1);
+        return dfs(n, memo);
     }
 };
