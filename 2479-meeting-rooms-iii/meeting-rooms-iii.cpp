@@ -1,70 +1,45 @@
-#include <vector>
-#include <algorithm>
-#include <climits>
-
-using namespace std;
-class Solution
-{
+class Solution {
 public:
-    int mostBooked(int n, vector<vector<int>>& meetings)
-    {
-        sort(meetings.begin(), meetings.end(),
-             [](const vector<int>& a, const vector<int>& b)
-             {
-                 return a[0] < b[0];
-             });
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        sort(meetings.begin(), meetings.end());
 
-        vector<long long> roomFreeTime(n, 0);
-        vector<int> roomMeetingCount(n, 0);
+        // free rooms by index
+        priority_queue<int, vector<int>, greater<int>> free;
+        for (int i = 0; i < n; i++) free.push(i);
 
-        for (const auto& meeting : meetings)
-        {
-            int start = meeting[0], end = meeting[1];
+        // busy rooms: {end_time, room_index}
+        priority_queue<pair<long long, int>,
+            vector<pair<long long, int>>,
+            greater<pair<long long, int>>> busy;
+
+        vector<int> cnt(n, 0);
+
+        for (auto &m : meetings) {
+            long long start = m[0], end = m[1];
             long long duration = end - start;
-            bool assigned = false;
 
-            for (int room = 0; room < n; ++room)
-            {
-                if (roomFreeTime[room] <= start)
-                {
-                    roomFreeTime[room] = end;
-                    roomMeetingCount[room]++;
-                    assigned = true;
-                    break;
-                }
+            // free rooms that are done before start
+            while (!busy.empty() && busy.top().first <= start) {
+                free.push(busy.top().second);
+                busy.pop();
             }
 
-            if (!assigned)
-            {
-                long long earliestTime = LLONG_MAX;
-                int chosenRoom = -1;
-
-                for (int room = 0; room < n; ++room)
-                {
-                    if (roomFreeTime[room] < earliestTime)
-                    {
-                        earliestTime = roomFreeTime[room];
-                        chosenRoom = room;
-                    }
-                }
-
-                roomFreeTime[chosenRoom] += duration;
-                roomMeetingCount[chosenRoom]++;
+            if (!free.empty()) {
+                int room = free.top(); free.pop();
+                busy.push({end, room});
+                cnt[room]++;
+            } else {
+                auto [t, room] = busy.top(); busy.pop();
+                busy.push({t + duration, room});
+                cnt[room]++;
             }
         }
 
-        int maxMeetings = 0;
-        int resultRoom = 0;
+        // find room with max meetings
+        int ans = 0;
+        for (int i = 1; i < n; i++)
+            if (cnt[i] > cnt[ans]) ans = i;
 
-        for (int i = 0; i < n; ++i)
-        {
-            if (roomMeetingCount[i] > maxMeetings)
-            {
-                maxMeetings = roomMeetingCount[i];
-                resultRoom = i;
-            }
-        }
-
-        return resultRoom;
+        return ans;
     }
 };
