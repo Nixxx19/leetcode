@@ -1,22 +1,36 @@
 class Solution {
 public:
-    vector<int> v;
+    stack<TreeNode*> l, r;
 
-    void inorder(TreeNode* r) {
-        if (!r) return;
-        inorder(r->left);
-        v.push_back(r->val);
-        inorder(r->right);
+    void pushLeft(TreeNode* n) {
+        while (n) {
+            l.push(n);
+            n = n->left;
+        }
+    }
+
+    void pushRight(TreeNode* n) {
+        while (n) {
+            r.push(n);
+            n = n->right;
+        }
     }
 
     bool findTarget(TreeNode* root, int k) {
-        inorder(root);
-        int l = 0, r = v.size() - 1;
-        while (l < r) {
-            int s = v[l] + v[r];
-            if (s == k) return true;
-            if (s < k) l++;
-            else r--;
+        pushLeft(root);
+        pushRight(root);
+
+        while (!l.empty() && !r.empty() && l.top() != r.top()) {
+            int a = l.top()->val;
+            int b = r.top()->val;
+            if (a + b == k) return true;
+            if (a + b < k) {
+                TreeNode* n = l.top(); l.pop();
+                pushLeft(n->right);
+            } else {
+                TreeNode* n = r.top(); r.pop();
+                pushRight(n->left);
+            }
         }
         return false;
     }
