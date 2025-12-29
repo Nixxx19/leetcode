@@ -1,15 +1,19 @@
 class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> freq(n + 1);
         int d = 0, m = 0;
-        for (int i = 0; i < nums.size(); i++) {
-            int idx = abs(nums[i]) - 1;
-            if (nums[idx] < 0) d = abs(nums[i]);
-            else nums[idx] = -nums[idx];
+
+        for (int x : nums) {
+            freq[x]++;
+            if (freq[x] == 2) d = x;
         }
-        for (int i = 0; i < nums.size(); i++) {
-            if (nums[i] > 0) m = i + 1;
+
+        for (int i = 1; i <= n; i++) {
+            if (freq[i] == 0) m = i;
         }
+
         return {d, m};
     }
 };
