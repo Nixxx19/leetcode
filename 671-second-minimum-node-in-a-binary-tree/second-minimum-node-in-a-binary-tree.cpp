@@ -1,18 +1,18 @@
 class Solution {
 public:
-    long long ans = LLONG_MAX;
-    int mn;
+    int helper(TreeNode* node, int base) {
+        if (!node) return -1;
+        if (node->val > base) return node->val;
 
-    void dfs(TreeNode* node) {
-        if (!node) return;
-        if (node->val > mn && node->val < ans) ans = node->val;
-        dfs(node->left);
-        dfs(node->right);
+        int l = helper(node->left, base);
+        int r = helper(node->right, base);
+
+        if (l == -1) return r;
+        if (r == -1) return l;
+        return min(l, r);
     }
 
     int findSecondMinimumValue(TreeNode* root) {
-        mn = root->val;
-        dfs(root);
-        return ans == LLONG_MAX ? -1 : ans;
+        return helper(root, root->val);
     }
 };
