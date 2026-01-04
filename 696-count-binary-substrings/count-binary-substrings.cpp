@@ -1,18 +1,17 @@
 class Solution {
 public:
     int countBinarySubstrings(string s) {
-        vector<int> g;
-        int cnt = 1;
-        for (int i = 1; i < s.size(); i++) {
-            if (s[i] == s[i - 1]) cnt++;
-            else {
-                g.push_back(cnt);
-                cnt = 1;
-            }
-        }
-        g.push_back(cnt);
         int ans = 0;
-        for (int i = 1; i < g.size(); i++) ans += min(g[i - 1], g[i]);
+        for (int i = 0; i < s.size(); i++) {
+            int j = i;
+            char a = s[i];
+            while (j < s.size() && s[j] == a) j++;
+            int k = j;
+            char b = a ^ 1;
+            while (k < s.size() && s[k] == b) k++;
+            ans += min(j - i, k - j);
+            i = j - 1;
+        }
         return ans;
     }
 };
