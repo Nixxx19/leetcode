@@ -1,17 +1,13 @@
 class Solution {
 public:
     int findShortestSubArray(vector<int>& nums) {
-        unordered_map<int,int> cnt, first, last;
-        for (int i = 0; i < nums.size(); i++) {
-            if (!first.count(nums[i])) first[nums[i]] = i;
-            last[nums[i]] = i;
-            cnt[nums[i]]++;
-        }
+        unordered_map<int, vector<int>> pos;
+        for (int i = 0; i < nums.size(); i++) pos[nums[i]].push_back(i);
         int deg = 0, ans = nums.size();
-        for (auto &p : cnt) deg = max(deg, p.second);
-        for (auto &p : cnt) {
-            if (p.second == deg) {
-                ans = min(ans, last[p.first] - first[p.first] + 1);
+        for (auto &p : pos) deg = max(deg, (int)p.second.size());
+        for (auto &p : pos) {
+            if (p.second.size() == deg) {
+                ans = min(ans, p.second.back() - p.second.front() + 1);
             }
         }
         return ans;
