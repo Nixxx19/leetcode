@@ -1,17 +1,17 @@
 class Solution {
 public:
     long long maxMatrixSum(vector<vector<int>>& matrix) {
-        long long sum = 0;
-        int neg = 0;
-        int mn = INT_MAX;
-        for (auto &r : matrix) {
-            for (int x : r) {
-                sum += abs(x);
-                if (x < 0) neg++;
-                mn = min(mn, abs(x));
+        int n = matrix.size();
+        long long s = 0;
+        int cnt = 0;
+        int m = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                s += llabs(matrix[i][j]);
+                if (matrix[i][j] < 0) cnt++;
+                m = min(m, abs(matrix[i][j]));
             }
         }
-        if (neg % 2) sum -= 2LL * mn;
-        return sum;
+        return cnt % 2 ? s - 2LL * m : s;
     }
 };
