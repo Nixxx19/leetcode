@@ -13,7 +13,13 @@ public:
     void remove(int key) {
         int i = key % B;
         auto &b = h[i];
-        b.erase(std::remove(b.begin(), b.end(), key), b.end());
+        for (int j = 0; j < b.size(); j++) {
+            if (b[j] == key) {
+                b[j] = b.back();
+                b.pop_back();
+                return;
+            }
+        }
     }
 
     bool contains(int key) {
