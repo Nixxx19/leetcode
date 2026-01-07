@@ -1,22 +1,24 @@
 class Solution {
 public:
-    long long total = 0, best = 0;
     const int MOD = 1e9 + 7;
+    long long total = 0, ans = 0;
 
-    long long dfs(TreeNode* root) {
+    long long solve(TreeNode* root) {
         if (!root) return 0;
-        long long s = root->val + dfs(root->left) + dfs(root->right);
-        best = max(best, s * (total - s));
-        return s;
+        long long l = solve(root->left);
+        long long r = solve(root->right);
+        long long cur = root->val + l + r;
+        ans = max(ans, cur * (total - cur));
+        return cur;
     }
 
     int maxProduct(TreeNode* root) {
-        function<long long(TreeNode*)> sum = [&](TreeNode* n) {
+        function<long long(TreeNode*)> calc = [&](TreeNode* n) {
             if (!n) return 0LL;
-            return n->val + sum(n->left) + sum(n->right);
+            return n->val + calc(n->left) + calc(n->right);
         };
-        total = sum(root);
-        dfs(root);
-        return best % MOD;
+        total = calc(root);
+        solve(root);
+        return ans % MOD;
     }
 };
