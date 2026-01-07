@@ -1,24 +1,20 @@
 class Solution {
 public:
     const int MOD = 1e9 + 7;
-    long long total = 0, ans = 0;
+    vector<long long> subs;
 
-    long long solve(TreeNode* root) {
+    long long dfs(TreeNode* root) {
         if (!root) return 0;
-        long long l = solve(root->left);
-        long long r = solve(root->right);
-        long long cur = root->val + l + r;
-        ans = max(ans, cur * (total - cur));
-        return cur;
+        long long s = root->val + dfs(root->left) + dfs(root->right);
+        subs.push_back(s);
+        return s;
     }
 
     int maxProduct(TreeNode* root) {
-        function<long long(TreeNode*)> calc = [&](TreeNode* n) {
-            if (!n) return 0LL;
-            return n->val + calc(n->left) + calc(n->right);
-        };
-        total = calc(root);
-        solve(root);
-        return ans % MOD;
+        long long total = dfs(root);
+        long long best = 0;
+        for (long long s : subs)
+            best = max(best, s * (total - s));
+        return best % MOD;
     }
 };
