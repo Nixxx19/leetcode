@@ -1,17 +1,23 @@
 class Solution {
 public:
-    int m,n,orig,c;
-    vector<vector<int>>* img;
-    void dfs(int i,int j){
-        if(i<0||j<0||i>=m||j>=n||(*img)[i][j]!=orig) return;
-        (*img)[i][j]=c;
-        dfs(i+1,j); dfs(i-1,j); dfs(i,j+1); dfs(i,j-1);
-    }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        orig=image[sr][sc];
+        int orig=image[sr][sc];
         if(orig==color) return image;
-        m=image.size(); n=image[0].size(); c=color; img=&image;
-        dfs(sr,sc);
+        int m=image.size(), n=image[0].size();
+        queue<pair<int,int>> q;
+        q.push({sr,sc});
+        image[sr][sc]=color;
+        int d[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+        while(!q.empty()){
+            auto [x,y]=q.front(); q.pop();
+            for(auto& k:d){
+                int nx=x+k[0], ny=y+k[1];
+                if(nx>=0&&ny>=0&&nx<m&&ny<n&&image[nx][ny]==orig){
+                    image[nx][ny]=color;
+                    q.push({nx,ny});
+                }
+            }
+        }
         return image;
     }
 };
