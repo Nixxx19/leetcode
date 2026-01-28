@@ -1,14 +1,21 @@
 class Solution {
 public:
-    int countPrimeSetBits(int left, int right) {
-        int mask = 0;
-        for (int p : {2,3,5,7,11,13,17,19})
-            mask |= (1 << p);
+    bool isPrime(int x) {
+        if (x < 2) return false;
+        for (int i = 2; i * i <= x; i++)
+            if (x % i == 0) return false;
+        return true;
+    }
 
+    int countPrimeSetBits(int left, int right) {
         int ans = 0;
         for (int i = left; i <= right; i++) {
-            int c = __builtin_popcount(i);
-            if (mask & (1 << c)) ans++;
+            int x = i, cnt = 0;
+            while (x) {
+                cnt += x & 1;
+                x >>= 1;
+            }
+            if (isPrime(cnt)) ans++;
         }
         return ans;
     }
