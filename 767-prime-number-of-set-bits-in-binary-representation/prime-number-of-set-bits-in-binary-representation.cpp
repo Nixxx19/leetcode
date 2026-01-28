@@ -1,10 +1,7 @@
 class Solution {
 public:
     bool isPrime(int x) {
-        if (x < 2) return false;
-        for (int i = 2; i * i <= x; i++)
-            if (x % i == 0) return false;
-        return true;
+        return x==2||x==3||x==5||x==7||x==11||x==13||x==17||x==19;
     }
 
     int countPrimeSetBits(int left, int right) {
@@ -12,8 +9,8 @@ public:
         for (int i = left; i <= right; i++) {
             int x = i, cnt = 0;
             while (x) {
-                cnt += x & 1;
-                x >>= 1;
+                x &= (x - 1);
+                cnt++;
             }
             if (isPrime(cnt)) ans++;
         }
