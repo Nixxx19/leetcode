@@ -1,9 +1,11 @@
 class Solution {
 public:
     int numJewelsInStones(string jewels, string stones) {
-        unordered_set<char> s(jewels.begin(), jewels.end());
+        long long mask = 0;
+        for (char c : jewels) mask |= 1LL << (c - 'A');
         int ans = 0;
-        for (char c : stones) if (s.count(c)) ans++;
+        for (char c : stones)
+            if (mask & (1LL << (c - 'A'))) ans++;
         return ans;
     }
 };
