@@ -1,10 +1,9 @@
 class Solution {
 public:
     int numJewelsInStones(string jewels, string stones) {
-        bool isJewel[128] = {};
-        for (char c : jewels) isJewel[c] = true;
+        unordered_set<char> s(jewels.begin(), jewels.end());
         int ans = 0;
-        for (char c : stones) if (isJewel[c]) ans++;
+        for (char c : stones) if (s.count(c)) ans++;
         return ans;
     }
 };
