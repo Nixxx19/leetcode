@@ -1,11 +1,10 @@
 class Solution {
 public:
     int numJewelsInStones(string jewels, string stones) {
-        long long mask = 0;
-        for (char c : jewels) mask |= 1LL << (c - 'A');
+        int cnt[128] = {};
+        for (char c : stones) cnt[c]++;
         int ans = 0;
-        for (char c : stones)
-            if (mask & (1LL << (c - 'A'))) ans++;
+        for (char c : jewels) ans += cnt[c];
         return ans;
     }
 };
