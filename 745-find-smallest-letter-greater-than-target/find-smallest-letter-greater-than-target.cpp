@@ -1,12 +1,17 @@
 class Solution {
 public:
     char nextGreatestLetter(vector<char>& letters, char target) {
-        int cnt[26]={0};
-        for(char c:letters) cnt[c-'a']++;
-        for(int i=target-'a'+1;i<26;i++)
-            if(cnt[i]) return 'a'+i;
-        for(int i=0;i<=target-'a';i++)
-            if(cnt[i]) return 'a'+i;
-        return letters[0];
+        int l = 0, r = letters.size() - 1;
+        char ans = letters[0];
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (letters[m] > target) {
+                ans = letters[m];
+                r = m - 1;
+            } else {
+                l = m + 1;
+            }
+        }
+        return ans;
     }
 };
