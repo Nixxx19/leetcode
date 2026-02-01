@@ -1,19 +1,19 @@
 class Solution {
 public:
-    int ans = INT_MAX;
-    int prev = -1;
+    vector<int> v;
 
     void dfs(TreeNode* root) {
         if (!root) return;
         dfs(root->left);
-        if (prev != -1)
-            ans = min(ans, root->val - prev);
-        prev = root->val;
+        v.push_back(root->val);
         dfs(root->right);
     }
 
     int minDiffInBST(TreeNode* root) {
         dfs(root);
+        int ans = INT_MAX;
+        for (int i = 1; i < v.size(); i++)
+            ans = min(ans, v[i] - v[i - 1]);
         return ans;
     }
 };
