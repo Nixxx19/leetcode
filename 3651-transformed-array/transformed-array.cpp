@@ -4,13 +4,14 @@ public:
         int n = nums.size();
         vector<int> res(n);
         for (int i = 0; i < n; i++) {
-            int shift = nums[i];
-            if (shift == 0) {
+            if (nums[i] == 0) {
                 res[i] = 0;
-                continue;
+            } else {
+                long long j = i + nums[i];
+                j %= n;
+                if (j < 0) j += n;
+                res[i] = nums[j];
             }
-            shift = ((shift % n) + n) % n;
-            res[i] = nums[(i + shift) % n];
         }
         return res;
     }
