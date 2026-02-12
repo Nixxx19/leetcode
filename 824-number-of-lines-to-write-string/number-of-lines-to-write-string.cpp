@@ -1,17 +1,18 @@
 class Solution {
 public:
     vector<int> numberOfLines(vector<int>& widths, string s) {
-        int lines = 1;
-        int used = 0;
-        for (int i = 0; i < s.size(); i++) {
-            int w = widths[s[i] - 'a'];
-            if (used + w <= 100) {
-                used += w;
-            } else {
+        int lines = 1, curr = 0;
+
+        for(char c : s) {
+            int w = widths[c - 'a'];
+            if(curr + w > 100) {
                 lines++;
-                used = w;
+                curr = w;
+            } else {
+                curr += w;
             }
         }
-        return {lines, used};
+
+        return {lines, curr};
     }
 };
