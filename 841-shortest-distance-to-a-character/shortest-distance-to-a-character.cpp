@@ -2,16 +2,15 @@ class Solution {
 public:
     vector<int> shortestToChar(string s, char c) {
         int n = s.length();
-        vector<int> indices, res(n);
+        vector<int> res(n);
+        int prev = -n, next = s.find(c);
         for (int i = 0; i < n; ++i) {
-            if (s[i] == c) indices.push_back(i);
-        }
-        for (int i = 0; i < n; ++i) {
-            auto it = lower_bound(indices.begin(), indices.end(), i);
-            int dist = 1e9;
-            if (it != indices.end()) dist = min(dist, *it - i);
-            if (it != indices.begin()) dist = min(dist, i - *prev(it));
-            res[i] = dist;
+            res[i] = min(i - prev, next - i);
+            if (i == next) {
+                prev = next;
+                next = s.find(c, prev + 1);
+                if (next == string::npos) next = 2 * n;
+            }
         }
         return res;
     }
