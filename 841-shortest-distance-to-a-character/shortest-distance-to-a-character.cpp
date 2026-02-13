@@ -2,23 +2,16 @@ class Solution {
 public:
     vector<int> shortestToChar(string s, char c) {
         int n = s.length();
-        vector<int> res(n, -1);
-        queue<int> q;
+        vector<int> indices, res(n);
         for (int i = 0; i < n; ++i) {
-            if (s[i] == c) {
-                res[i] = 0;
-                q.push(i);
-            }
+            if (s[i] == c) indices.push_back(i);
         }
-        while (!q.empty()) {
-            int cur = q.front();
-            q.pop();
-            for (int next : {cur - 1, cur + 1}) {
-                if (next >= 0 && next < n && res[next] == -1) {
-                    res[next] = res[cur] + 1;
-                    q.push(next);
-                }
-            }
+        for (int i = 0; i < n; ++i) {
+            auto it = lower_bound(indices.begin(), indices.end(), i);
+            int dist = 1e9;
+            if (it != indices.end()) dist = min(dist, *it - i);
+            if (it != indices.begin()) dist = min(dist, i - *prev(it));
+            res[i] = dist;
         }
         return res;
     }
