@@ -7,10 +7,9 @@ public:
             int sum = carry;
             if (i >= 0) sum += a[i--] - '0';
             if (j >= 0) sum += b[j--] - '0';
-            res.push_back((sum % 2) + '0');
+            res.insert(res.begin(), (sum % 2) + '0');
             carry = sum / 2;
         }
-        reverse(res.begin(), res.end());
         return res;
     }
 };
