@@ -1,26 +1,27 @@
 class Solution {
 public:
-    int countBits(int x) {
-        int cnt = 0;
-        while (x) {
-            cnt += x & 1;
-            x >>= 1;
+    vector<string> res;
+    
+    void backtrack(int leds, int idx, int hours, int mins) {
+        if (hours > 11 || mins > 59) return;
+        if (leds == 0) {
+            string time = to_string(hours) + ":";
+            if (mins < 10) time += "0";
+            time += to_string(mins);
+            res.push_back(time);
+            return;
         }
-        return cnt;
+        
+        for (int i = idx; i < 10; i++) {
+            if (i < 4)
+                backtrack(leds - 1, i + 1, hours + (1 << i), mins);
+            else
+                backtrack(leds - 1, i + 1, hours, mins + (1 << (i - 4)));
+        }
     }
     
     vector<string> readBinaryWatch(int turnedOn) {
-        vector<string> res;
-        for (int h = 0; h < 12; h++) {
-            for (int m = 0; m < 60; m++) {
-                if (countBits(h) + countBits(m) == turnedOn) {
-                    string time = to_string(h) + ":";
-                    if (m < 10) time += "0";
-                    time += to_string(m);
-                    res.push_back(time);
-                }
-            }
-        }
+        backtrack(turnedOn, 0, 0, 0);
         return res;
     }
 };
