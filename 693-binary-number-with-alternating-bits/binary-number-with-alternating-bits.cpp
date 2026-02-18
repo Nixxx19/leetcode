@@ -1,11 +1,16 @@
 class Solution {
 public:
     bool hasAlternatingBits(int n) {
-        while (n > 0) {
-            if ((n & 3) == 0 || (n & 3) == 3)
-                return false;
+        int prev = n & 1;
+        n >>= 1;
+        
+        while (n) {
+            int curr = n & 1;
+            if (curr == prev) return false;
+            prev = curr;
             n >>= 1;
         }
+        
         return true;
     }
 };
