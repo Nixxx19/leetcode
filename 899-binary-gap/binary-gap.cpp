@@ -1,16 +1,17 @@
 class Solution {
 public:
     int binaryGap(int n) {
-        int prev = -1, res = 0;
+        string s = bitset<32>(n).to_string();
+        int last = -1, ans = 0;
         
-        for (int i = 0; i < 31; i++) {
-            if (n & (1 << i)) {
-                if (prev != -1)
-                    res = max(res, i - prev);
-                prev = i;
+        for (int i = 0; i < 32; i++) {
+            if (s[i] == '1') {
+                if (last != -1)
+                    ans = max(ans, i - last);
+                last = i;
             }
         }
         
-        return res;
+        return ans;
     }
 };
