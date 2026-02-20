@@ -1,26 +1,22 @@
 class Solution {
 public:
     string makeLargestSpecial(string s) {
-        function<string(string)> solve = [&](string str) {
-            vector<string> blocks;
-            int bal = 0, start = 0;
-            
-            for (int i = 0; i < str.size(); i++) {
-                bal += (str[i] == '1') ? 1 : -1;
-                if (bal == 0) {
-                    string inner = str.substr(start + 1, i - start - 1);
-                    blocks.push_back("1" + solve(inner) + "0");
-                    start = i + 1;
-                }
-            }
-            
-            sort(blocks.rbegin(), blocks.rend());
-            
-            string ans;
-            for (auto &b : blocks) ans += b;
-            return ans;
-        };
+        vector<string> parts;
+        int bal = 0, start = 0;
         
-        return solve(s);
+        for (int i = 0; i < s.size(); i++) {
+            bal += (s[i] == '1') ? 1 : -1;
+            if (bal == 0) {
+                string inner = s.substr(start + 1, i - start - 1);
+                parts.push_back("1" + makeLargestSpecial(inner) + "0");
+                start = i + 1;
+            }
+        }
+        
+        sort(parts.begin(), parts.end(), greater<string>());
+        
+        string res;
+        for (auto &p : parts) res += p;
+        return res;
     }
 };
