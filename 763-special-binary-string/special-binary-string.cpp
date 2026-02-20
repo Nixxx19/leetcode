@@ -1,22 +1,31 @@
 class Solution {
 public:
     string makeLargestSpecial(string s) {
-        vector<string> parts;
-        int bal = 0, start = 0;
+        stack<vector<string>> st;
+        st.push({});
         
-        for (int i = 0; i < s.size(); i++) {
-            bal += (s[i] == '1') ? 1 : -1;
-            if (bal == 0) {
-                string inner = s.substr(start + 1, i - start - 1);
-                parts.push_back("1" + makeLargestSpecial(inner) + "0");
-                start = i + 1;
+        for (char c : s) {
+            if (c == '1') {
+                st.push({});
+            } else {
+                auto top = st.top();
+                st.pop();
+                
+                sort(top.rbegin(), top.rend());
+                
+                string merged;
+                for (auto &x : top) merged += x;
+                
+                string block = "1" + merged + "0";
+                st.top().push_back(block);
             }
         }
         
-        sort(parts.begin(), parts.end(), greater<string>());
+        auto result = st.top();
+        sort(result.rbegin(), result.rend());
         
-        string res;
-        for (auto &p : parts) res += p;
-        return res;
+        string ans;
+        for (auto &x : result) ans += x;
+        return ans;
     }
 };
