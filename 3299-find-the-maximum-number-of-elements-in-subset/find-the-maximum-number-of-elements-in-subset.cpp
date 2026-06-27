@@ -1,23 +1,25 @@
 class Solution {
 public:
     int maximumLength(vector<int>& nums) {
-        unordered_map<long long, long long> cnt;
-        for (int x : nums) cnt[x]++;
+        unordered_map<long long, int> mp;
+        for (auto n : nums) mp[n]++;
 
-        long long ans = 1;
-        for (auto& [v, c] : cnt) {
-            if (v == 1) {                      // all ones, need odd length
-                ans = max(ans, c - (c % 2 == 0));
-                continue;
+        int best = 1;
+        if (mp.count(1)) best = mp[1] % 2 ? mp[1] : mp[1] - 1;
+
+        for (auto& p : mp) {
+            long long x = p.first;
+            if (x == 1) continue;
+
+            int t = 0;
+            while (mp.find(x) != mp.end() && mp[x] >= 2) {
+                t += 2;
+                x *= x;
             }
-            long long cur = v, len = 0;
-            while (cnt.count(cur) && cnt[cur] >= 2) {
-                len += 2;
-                cur *= cur;
-            }
-            len += cnt.count(cur) ? 1 : -1;    // single peak, or give one back
-            ans = max(ans, len);
+            if (mp.find(x) != mp.end()) t += 1;   // top exists -> peak
+            else t -= 1;                          // borrow a pair as the peak
+            best = max(best, t);
         }
-        return ans;
+        return best;
     }
 };
