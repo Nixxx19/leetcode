@@ -2,24 +2,30 @@ class Solution {
 public:
     long long countMajoritySubarrays(vector<int>& nums, int target) {
         int n = nums.size();
-        vector<int> bit(2 * n + 2, 0);
-        auto add = [&](int i) {
-            for (++i; i <= 2 * n + 1; i += i & -i) bit[i]++;
-        };
-        auto query = [&](int i) {            // how many inserted are <= i
-            int s = 0;
-            for (++i; i > 0; i -= i & -i) s += bit[i];
-            return s;
-        };
+        vector<int> pre(n + 1, 0);
+        for (int i = 0; i < n; i++)
+            pre[i + 1] = pre[i] + (nums[i] == target ? 1 : -1);
+        vector<int> tmp(n + 1);
+        return go(pre, tmp, 0, n);
+    }
+private:
+    long long go(vector<int>& a, vector<int>& tmp, int lo, int hi) {
+        if (lo >= hi) return 0;
+        int mid = (lo + hi) >> 1;
+        long long cnt = go(a, tmp, lo, mid) + go(a, tmp, mid + 1, hi);
 
-        long long ans = 0;
-        int pre = n;                 // P[0] = 0, shifted by n
-        add(pre);
-        for (int x : nums) {
-            pre += (x == target) ? 1 : -1;
-            ans += query(pre - 1);   // earlier prefixes strictly smaller
-            add(pre);
+        int i = lo, j = mid + 1;
+        while (i <= mid && j <= hi) {            // left val < right val
+            if (a[i] < a[j]) { cnt += hi - j + 1; i++; }
+            else j++;
         }
-        return ans;
+
+        i = lo; j = mid + 1; int k = lo;         // standard merge
+        while (i <= mid && j <= hi)
+            tmp[k++] = (a[i] <= a[j]) ? a[i++] : a[j++];
+        while (i <= mid) tmp[k++] = a[i++];
+        while (j <= hi)  tmp[k++] = a[j++];
+        for (int t = lo; t <= hi; t++) a[t] = tmp[t];
+        return cnt;
     }
 };
